@@ -1,0 +1,19 @@
+{
+  "name": "employee_tracking",
+  "version": "1.0.0",
+  "description": "Simple REST project.",
+  "main": "server.js",
+  "private": false,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "boom": "^4.2.0",
+    "hapi": "^16.1.0",
+    "joi": "^10.2.2",
+    "moment": "^2.18.1",
+    "mysql": "^2.4.0",
+    "node-querybuilder": "^0.15.0",
+    "node-uuid": "^1.4.7"
+  }
+}

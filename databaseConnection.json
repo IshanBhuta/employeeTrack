@@ -1,0 +1,6 @@
+{
+    "host": "employeetrack.cwsongchh825.us-east-2.rds.amazonaws.com",
+    "database": "employee_tracking",
+    "user": "vsi_tech",
+    "password" :  "Mp09mx.6140"
+}

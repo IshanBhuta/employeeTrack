@@ -15,5 +15,8 @@
     "mysql": "^2.4.0",
     "node-querybuilder": "^0.15.0",
     "node-uuid": "^1.4.7"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }

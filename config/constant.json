@@ -1,0 +1,7 @@
+{
+	"SUCCESS" : "Success",
+	"ERROR" : "Error",
+	"SUCCESS_CODE" : 200,
+	"UNAUTHORISED" : 401,
+	"ERROR" : 300
+}

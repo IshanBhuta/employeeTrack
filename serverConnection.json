@@ -1,7 +1,11 @@
 
 {
 	"dev" : {  
-	    "host": "13.59.7.59",
+	    "host": "localhost",
+	    "port": 8000
+	},
+	"devServer" : {  
+	    "host": "localhost",
 	    "port": 8000
 	}
 }

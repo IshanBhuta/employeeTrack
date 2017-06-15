@@ -1,7 +1,6 @@
 class Utility {}
 
 Utility.prototype.returnReply = function(status, message, data) {
-	console.log(status);
 	switch(status) {
 	    case "Success":
 	    	return {message : message, status : status, data : data, statusCode : 200}

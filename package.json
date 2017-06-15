@@ -14,7 +14,8 @@
     "moment": "^2.18.1",
     "mysql": "^2.4.0",
     "node-querybuilder": "^0.15.0",
-    "node-uuid": "^1.4.7"
+    "node-uuid": "^1.4.7",
+    "pm2": "^2.5.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

@@ -6,7 +6,8 @@ const serverConnection = require('./serverConnection');
 const Good = require('good');
 // Create a server with a host and port
 const server = new Hapi.Server();  
-server.connection(serverConnection.dev);
+// server.connection(serverConnection.dev);
+server.connection(serverConnection.devServer);
 const AuthBearer = require('hapi-auth-bearer-token');
 const UtilityClass = require('./utilities/utility');
 const constants = require('./config/constant');

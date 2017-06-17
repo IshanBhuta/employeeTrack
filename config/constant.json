@@ -1,6 +1,7 @@
 {
 	"SUCCESS" : "Success",
 	"ERROR" : "Error",
+	"UNAUTHORISED_ACCESS" : "Un-Authorised",
 	"SUCCESS_CODE" : 200,
 	"UNAUTHORISED" : 401,
 	"ERROR" : 300

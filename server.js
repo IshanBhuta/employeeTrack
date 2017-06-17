@@ -8,16 +8,19 @@ const Good = require('good');
 const server = new Hapi.Server();  
 server.connection(serverConnection.dev);
 const AuthBearer = require('hapi-auth-bearer-token');
+const UtilityClass = require('./utilities/Utility');
+const constants = require('./config/constant');
 
 
 const User = new UserClass();
+const Utility = new UtilityClass();
 
 
 // authenticating token
 
 server.register(AuthBearer, (err) => {
  
-    server.auth.strategy('simple', 'bearer-access-token', {
+    server.auth.strategy('advanceAuth', 'bearer-access-token', {
         allowQueryToken: false,              // optional, false by default 
         allowMultipleHeaders: false,        // optional, false by default 
         accessTokenName: 'access_token',    // optional, 'access_token' by default 
@@ -26,11 +29,41 @@ server.register(AuthBearer, (err) => {
         }
     });
 
+    const scheme = function (server, options) {
+
+        return {
+            authenticate: function (request, reply) {
+                var userAuthenticated = Utility.authenticate(request, reply);
+                console.log(userAuthenticated);
+                if (userAuthenticated) {
+                    reply.continue({credentials : true})
+                }else{
+                    return reply(Utility.generateResponse(constants.UNAUTHORISED_ACCESS, "Un-Authorised", [])).code(401);
+                }
+            }
+        };
+    };
+
+    server.auth.scheme('custom', scheme);
+    server.auth.strategy('default', 'custom');
+    // server.auth.default('default');
+
+    server.route({
+        method: 'GET',
+
+        path: '/check',
+        config: {
+        auth: 'default',
+            handler: function (request, reply) {
+                return reply("Okay");
+            }
+        }
+    });
+
     // Add the route
     server.route({  
         method: 'GET',
         config: {
-           auth: 'simple',
             handler: function (request, reply) {
                 return reply('server working successfully');
             }
@@ -43,7 +76,7 @@ server.register(AuthBearer, (err) => {
         method: 'POST',
         path:'/signUp',
         config : {
-            auth : 'simple',
+            auth : 'advanceAuth',
             handler: function (request, reply) {
                 return User.signUp(request, reply);
             }

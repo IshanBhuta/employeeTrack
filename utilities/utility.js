@@ -1,6 +1,6 @@
 class Utility {}
 
-Utility.prototype.returnReply = function(status, message, data) {
+Utility.prototype.generateResponse = function(status, message, data) {
 	switch(status) {
 	    case "Success":
 	    	return {message : message, status : status, data : data, statusCode : 200}
@@ -15,5 +15,15 @@ Utility.prototype.returnReply = function(status, message, data) {
 
 	}
 };
+
+Utility.prototype.authenticate = function (request, reply) {
+    const req = request.raw.req;
+    const api_key = req.headers.api_key;
+    if (api_key != 'api_key') {
+    	return false;
+    }else{
+    	return true;
+    }
+}
 
 module.exports = Utility;

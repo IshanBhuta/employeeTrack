@@ -38,7 +38,7 @@ User.prototype.signUp = function(request, reply) {
     self.qb.select('*').where({email: userObj.email}).limit(1).get('user', function(err,response) {
         if (err) {
         	// console.log("Query Ran: " + qb.last_query());
-        	return console.error("Uh oh! Couldn't get results: " + err.msg); 
+        	return console.error("Uh oh! Couldn't get results: " + err); 
         }
 
 

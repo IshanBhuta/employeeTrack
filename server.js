@@ -5,7 +5,7 @@ const UserClass = require('./user');
 const serverConnection = require('./serverConnection');
 // Create a server with a host and port
 const server = new Hapi.Server();  
-server.connection(serverConnection.devServer);
+server.connection(serverConnection.dev);
 
 
 const User = new UserClass();
@@ -36,3 +36,5 @@ server.start((err) => {
     }
     console.log('Server running at:', server.info.uri);
 });
+
+module.exports = server;

@@ -5,7 +5,7 @@
 	    "port": 8000
 	},
 	"devServer" : {  
-	    "host": "127.0.0.1",
+	    "host": "localhost",
 	    "port": 4000
 
 	}

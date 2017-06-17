@@ -71,4 +71,19 @@ User.prototype.signUp = function(request, reply) {
     });
 };
 
+User.prototype.authorizationCheck = function (token, callback) {
+
+    // For convenience, the request object can be accessed 
+    // from `this` within validateFunc. 
+    var request = this;
+
+    // Use a real strategy here, 
+    // comparing with a token from your database for example 
+    if (token === "employTracking") {
+        return callback(null, true, { token: token });
+    }
+
+    return callback(null, false, { token: token }, { artifact1: 'an artifact' });
+}
+
 module.exports = User;

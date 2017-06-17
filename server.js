@@ -8,7 +8,7 @@ const Good = require('good');
 const server = new Hapi.Server();  
 server.connection(serverConnection.dev);
 const AuthBearer = require('hapi-auth-bearer-token');
-const UtilityClass = require('./utilities/Utility');
+const UtilityClass = require('./utilities/utility');
 const constants = require('./config/constant');
 
 

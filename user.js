@@ -8,7 +8,7 @@ class User {
 	constructor() {
 		this.qb = require('./databaseConnector');
 		this.moment = require('moment');
-		this.UtilityClass = require('./utilities/Utility');
+		this.UtilityClass = require('./utilities/utility');
 		this.constants = require('./config/constant');
 	}
 }

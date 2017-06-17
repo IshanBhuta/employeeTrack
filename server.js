@@ -1,7 +1,7 @@
 'use strict';
 
 const Hapi = require('hapi');
-const UserClass = require('./user');
+// const UserClass = require('./user');
 const serverConnection = require('./serverConnection');
 const Good = require('good');
 // Create a server with a host and port
@@ -9,7 +9,7 @@ const server = new Hapi.Server();
 server.connection(serverConnection.dev);
 
 
-const User = new UserClass();
+// const User = new UserClass();
 // Add the route
 server.route({  
     method: 'GET',
@@ -20,13 +20,13 @@ server.route({
 });
 
 // Add the route
-server.route({  
+/*server.route({  
     method: 'POST',
     path:'/signUp',
     handler: function (request, reply) {
         return User.signUp(request, reply);
     }
-});
+});*/
 
 
 server.register({

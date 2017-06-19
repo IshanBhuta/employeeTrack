@@ -9,27 +9,31 @@ class User {
 		this.qb = require('./databaseConnector');
 		this.moment = require('moment');
 		this.UtilityClass = require('./utilities/utility');
-		this.constants = require('./config/constant');
+        this.constants = require('./config/constant');
+        this.underscore = require('underscore');
+        this.uuidV4 = require('uuid/v4');
+        var cryptr = require('cryptr');
+        this.Cryptr = new cryptr('employeeTrack');
 	}
 }
 
 User.prototype.signUp = function(request, reply) {
 	var self = this;
-	var utcDate = new Date( this.moment.utc().format("Y-m-d H:i:s"));
 	// var Utility = new this.Utility();
     var userObj = {
         "email" : request.payload.email,
-        "password" : request.payload.password,
+        "password" : this.Cryptr.encrypt(request.payload.password),
         "firstName" : request.payload.firstName,
         "lastName" : request.payload.lastName,
         "mobileNo" : request.payload.mobileNo,
         "deviceType" : request.payload.deviceType,
         "address" : request.payload.address,
+        "authToken" : this.uuidV4(),
         "role" : request.payload.role,
         "currentLocation" : request.payload.currentLocation,
         "description" : request.payload.description,
-        "crd" : utcDate,
-        "upd" : utcDate
+        "crd" : this.moment.utc().format("YYYY-MM-DD HH:mm:ss"),
+        "upd" : this.moment.utc().format("YYYY-MM-DD HH:mm:ss")
     }
 
 
@@ -54,7 +58,7 @@ User.prototype.signUp = function(request, reply) {
                 else {
                     if (res.affectedRows > 0) {
                         var insertId = res.insertId;
-                        console.log(insertId);
+                        delete userObj.password;
                         userObj.userId = insertId
             			return reply(self.Utility.generateResponse(self.constants.SUCCESS, "User added successfully", userObj)).code(200);
                         /*self.qb.get_where('user', {id: insertId}, function(err, res) {
@@ -67,6 +71,43 @@ User.prototype.signUp = function(request, reply) {
                     }
                 }
             });
+        }
+    });
+};
+
+User.prototype.signIn = function(request, reply) {
+    var self = this;
+    var utcDate = this.moment.utc().valueOf();
+    
+
+
+    // checking that user already exist
+    self.Utility = new self.UtilityClass();
+    self.qb.select('id as userId, email, authToken, firstName, lastName, deviceType, role, crd, upd').where({
+        email: request.payload.email,
+        password: this.Cryptr.encrypt(request.payload.password)
+    }).limit(1).get('user', function(err,response) {
+        if (err) {
+            // console.log("Query Ran: " + qb.last_query());
+            return console.error("Uh oh! Couldn't get results: " + err); 
+        }
+
+        if (response.length > 0) {
+            var authToken = self.uuidV4();
+            var userObj = response;
+            userObj.authToken = authToken;
+            console.log(userObj)
+            // response.authToken = authToken;
+            self.qb.update('user', {"authToken" : authToken}, {id: response.userId}, function(err, res) {
+                if (response.length > 0) {
+                    console.log("****************")
+                } else {
+                    this.qb.release();
+                }
+            });
+            return reply(self.Utility.generateResponse(self.constants.SUCCESS, "Login Success", userObj)).code(200);
+        }else{
+            return reply(self.Utility.generateResponse(self.constants.SUCCESS, "Incorrect Email OR Password", [])).code(201);
         }
     });
 };

@@ -6,8 +6,8 @@ const serverConnection = require('./serverConnection');
 const Good = require('good');
 // Create a server with a host and port
 const server = new Hapi.Server();  
-// server.connection(serverConnection.dev);
-server.connection(serverConnection.devServer);
+server.connection(serverConnection.dev);
+// server.connection(serverConnection.devServer);
 const AuthBearer = require('hapi-auth-bearer-token');
 const UtilityClass = require('./utilities/utility');
 const constants = require('./config/constant');
@@ -26,7 +26,13 @@ server.register(AuthBearer, (err) => {
         allowMultipleHeaders: false,        // optional, false by default 
         accessTokenName: 'access_token',    // optional, 'access_token' by default 
         validateFunc: function (token, callback) {
-            return User.authorizationCheck(token,callback);
+            var userAuthenticated = Utility.authenticate(request, reply);
+            if (userAuthenticated) {
+                return User.authorizationCheck(token,callback);
+                reply.continue({credentials : true})
+            }else{
+                return reply(Utility.generateResponse(constants.UNAUTHORISED_ACCESS, "Un-Authorised", [])).code(401);
+            }
         }
     });
 
@@ -47,7 +53,6 @@ server.register(AuthBearer, (err) => {
 
     server.auth.scheme('custom', scheme);
     server.auth.strategy('default', 'custom');
-    // server.auth.default('default');
 
     server.route({
         method: 'GET',
@@ -77,12 +82,25 @@ server.register(AuthBearer, (err) => {
         method: 'POST',
         path:'/signUp',
         config : {
-            auth : 'advanceAuth',
+            auth : 'default',
             handler: function (request, reply) {
                 return User.signUp(request, reply);
             }
         }
-    });
+    })
+
+    server.route({  
+        method: 'POST',
+        path:'/signIn',
+        config : {
+            auth : 'default',
+            handler: function (request, reply) {
+                return User.signIn(request, reply);
+            }
+        }
+    })
+
+
 })
 
 server.register({

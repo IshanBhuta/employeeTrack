@@ -93,19 +93,15 @@ User.prototype.signIn = function(request, reply) {
         }
 
         if (response.length > 0) {
-            var authToken = self.uuidV4();
-            var userObj = response;
-            userObj.authToken = authToken;
-            console.log(userObj)
             // response.authToken = authToken;
-            self.qb.update('user', {"authToken" : authToken}, {id: response.userId}, function(err, res) {
+            /*self.qb.update('user', {"authToken" : authToken}, {id: response.userId}, function(err, res) {
                 if (response.length > 0) {
                     console.log("****************")
                 } else {
                     this.qb.release();
                 }
-            });
-            return reply(self.Utility.generateResponse(self.constants.SUCCESS, "Login Success", userObj)).code(200);
+            });*/
+            return reply(self.Utility.generateResponse(self.constants.SUCCESS, "Login Success", response)).code(200);
         }else{
             return reply(self.Utility.generateResponse(self.constants.SUCCESS, "Incorrect Email OR Password", [])).code(201);
         }

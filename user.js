@@ -138,6 +138,10 @@ User.prototype.updateLocation = function(request, reply) {
         }else{
             currentUser['underRadius'] = false;
         }
+
+        // updating current location 
+        currentUser.userLat = userObj.lat;
+        currentUser.userLng = userObj.lng;
         
 
         return reply(self.Utility.generateResponse(self.constants.SUCCESS, "location Updated successfully", currentUser)).code(200);

@@ -26,13 +26,13 @@ server.register(AuthBearer, (err) => {
         allowMultipleHeaders: false,        // optional, false by default 
         accessTokenName: 'access_token',    // optional, 'access_token' by default 
         validateFunc: function (token, callback) {
-            var userAuthenticated = Utility.authenticate(request, reply);
-            if (userAuthenticated) {
+            // var userAuthenticated = Utility.authenticate(request, reply);
+            // if (userAuthenticated) {
                 return User.authorizationCheck(token,callback);
-                reply.continue({credentials : true})
-            }else{
-                return reply(Utility.generateResponse(constants.UNAUTHORISED_ACCESS, "Un-Authorised", [])).code(401);
-            }
+                reply.continue({currentUser : true})
+            // }else{
+            //     return reply(Utility.generateResponse(constants.UNAUTHORISED_ACCESS, "Un-Authorised", [])).code(401);
+            // }
         }
     });
 
@@ -41,7 +41,6 @@ server.register(AuthBearer, (err) => {
         return {
             authenticate: function (request, reply) {
                 var userAuthenticated = Utility.authenticate(request, reply);
-                console.log(userAuthenticated);
                 if (userAuthenticated) {
                     reply.continue({credentials : true})
                 }else{
@@ -96,6 +95,17 @@ server.register(AuthBearer, (err) => {
             auth : 'default',
             handler: function (request, reply) {
                 return User.signIn(request, reply);
+            }
+        }
+    })
+
+    server.route({  
+        method: 'POST',
+        path:'/updateLocation',
+        config : {
+            auth : 'advanceAuth',
+            handler: function (request, reply) {
+                return User.updateLocation(request, reply);
             }
         }
     })

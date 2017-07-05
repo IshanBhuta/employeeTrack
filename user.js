@@ -163,7 +163,7 @@ User.prototype.authorizationCheck = function (token, callback) {
         authToken: token
     }).limit(1).get('user', function(err,response) {
         if (err) {
-            return reply("Uh oh! Couldn't get results: " + err); 
+            console.log("Uh oh! Couldn't get results: " + err); 
         }else{
             return callback(null, true, {currentUser:response[0]});
         }

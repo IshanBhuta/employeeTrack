@@ -165,7 +165,11 @@ User.prototype.authorizationCheck = function (token, callback) {
         if (err) {
             console.log("Uh oh! Couldn't get results: " + err); 
         }else{
-            return callback(null, true, {currentUser:response[0]});
+            if (response.length > 0) {
+                return callback(null, true, {currentUser:response[0]});
+            }else{
+                return callback(null, false, {currentUser:[]});
+            }
         }
     });
 
